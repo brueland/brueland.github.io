@@ -5,3 +5,4 @@ description: Home of my digital and physical projects. <br/> Check back often to
 collections:
   functional_prints:
     output: true
+    permalink: /functional_prints/:path/
