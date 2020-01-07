@@ -1,3 +1,7 @@
 theme: jekyll-theme-cayman
 title: Welcome to Brue Land!
 description: Home of my digital and physical projects. <br/> Check back often to see if I've Brue'd anything new!
+
+collections:
+  content/functional_prints:
+    output: true
