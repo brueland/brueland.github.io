@@ -1,3 +1,3 @@
 README: hello world
 
-[/content/Page1.md](link)
+[/content/Page1.md](/content/Page1.md)
