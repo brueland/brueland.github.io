@@ -5,7 +5,7 @@ README: hello world
 
 
 <ul>
-  {% for prints in site.content.functional_prints %}
+  {% for prints in site.functional_prints %}
     <li>
       <a href="{{ prints.url }}">{{ prints.title }}</a>
       - {{ prints.headline }}
