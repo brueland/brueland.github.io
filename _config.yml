@@ -10,7 +10,6 @@ theme: jekyll-theme-cayman
 description: Home of my digital and physical projects. <br/> Check back often to see if I've Brue'd anything new!
 email: wesbrueland@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://brue.land" # the base hostname & protocol for your site
 twitter_username: @WesleyBrueland
 github_username:  brueland
 
