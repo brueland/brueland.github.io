@@ -1,8 +1,18 @@
-theme: jekyll-theme-cayman
-title: Welcome to Brue Land!
-description: Home of my digital and physical projects. <br/> Check back often to see if I've Brue'd anything new!
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
 
-collections:
-  functional_prints:
-    output: true
-    permalink: /functional_prints/:path/
+# Site settings
+theme: jekyll-theme-cayman
+description: Home of my digital and physical projects. <br/> Check back often to see if I've Brue'd anything new!
+email: wesbrueland@gmail.com
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://brue.land" # the base hostname & protocol for your site
+twitter_username: @WesleyBrueland
+github_username:  brueland
+
+# Build settings
+markdown: kramdown
