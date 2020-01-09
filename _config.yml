@@ -13,6 +13,8 @@ email: wesbrueland@gmail.com
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: WesleyBrueland
 github_username:  brueland
+# Google Analytics
+google_analytics: UA-155865742-1
 
 # Build settings
 markdown: kramdown
