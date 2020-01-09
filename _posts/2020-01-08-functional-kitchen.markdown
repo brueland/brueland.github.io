@@ -7,4 +7,4 @@ categories: functional 3d print
 ---
 
 placeholder
-![mixer nub](_images/2020-01-08-functional-kitchen/IMG_20200105_104021_resize_23.jpg)
+![mixer nub]({{ site.url }}/_images/2020-01-08-functional-kitchen/IMG_20200105_104021_resize_23.jpg)
