@@ -12,7 +12,7 @@ The men in my family have an aptitude for starting more pet projects than one si
 
 In recent weeks, I have invested my attention in a new hobby, 3d printing. Cyber Monday tempted me away from vacation and 
 
-{% include_relative _product_links/test/production_link_1.html %}
+{% include_relative _product_links/2020-01-08-functional-kitchen/product_link_1.html %}
 
 {% include image-gallery.html folder="/images/2020-01-08-functional-kitchen/" %}
 
