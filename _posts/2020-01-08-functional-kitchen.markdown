@@ -22,7 +22,9 @@ Drunk on newfound 3d printing power, I started what any self-respecting engineer
 
 The first print of many was a series of under-cabinent mounted KitchenAid mixer heads for storing attachments. [This Thingiverse model](https://www.thingiverse.com/thing:4075735) by [rogertaylor](https://www.thingiverse.com/rogertaylor/about) was modeled after the attachment point for KitchenAid implements and was sliced into a few different options for printing. The author suggested printing in two halves and gluing together to help ease in printing the overhanging knob, but being impatient, I opted to print the enitre assembly whole with a couple supports added during slicing. Included below are the results of the print after mounting. 
 
+<center>
 {% include image-gallery.html folder="/images/2020-01-08-functional-kitchen/" %}
+</center>
 
 In hindsight, printing as suggested would have helped with structural integrity as the grain of the print would have been in the primary stress direction. When more attachments eventually _magically_ appear in the kitchen, I'll probably attempt the aforementioned method. 
 
