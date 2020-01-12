@@ -16,7 +16,7 @@ In recent weeks, I have invested my attention in a new hobby, 3d printing. Cyber
 {% include_relative _product_links/2020-01-08-functional-kitchen/product_link_1.html %}
 </center>
 
-Longer is a brand based out of China and seems to be producing decent quality additive manufacturing products for relatively cheap. I scored this printer itself for $159.00 on sale and was able to get it assembled and printing within a few hours. The only complaint I have was forewarned in the reviews and is that one of the legs included was just barely too short to make the whole setup level. However, the gap between leg and table happened to be exactly the height of the wrench included for belt adjustment, so I have decided that this is a built in storage "_feature_". 
+[Longer](http://www.longer3d.com/) is a brand based out of China and seems to be producing decent quality additive manufacturing products for relatively cheap. I scored this printer itself for $159.00 on sale and was able to get it assembled and printing within a few hours. The only complaint I have was forewarned in the reviews and is that one of the legs included was just barely too short to make the whole setup level. However, the gap between leg and table happened to be exactly the height of the wrench included for belt adjustment, so I have decided that this is a built in storage "_feature_". 
 
 Drunk on newfound 3d printing power, I started what any self-respecting engineer would do (after printing too many Pokemon figurines) and started trying to use my power for good. At least good around the home. My first target was our kitchen with it's limited storage space. In my printing research I had started seeing more and more handy kitchen ideas that would help declutter our space. 
 
