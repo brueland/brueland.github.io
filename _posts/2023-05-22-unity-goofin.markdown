@@ -8,6 +8,8 @@ categories: unity
 
 This page hosts the results of some of the Unity assignments developed during my Master's class this semeseter.
 
-[Roll-A-Ball Tutorial with Assignment Modifications](https://github.com/brueland/brueland.github.io/blob/master/_posts/_games/roll-a-ball/index.html)
+Roll-A-Ball Tutorial with Assignment Modifications
+
+{% include_relative _games/roll-a-ball/index.html %}
 
 Roll-A-Ball tutorial: https://learn.unity.com/project/roll-a-ball
