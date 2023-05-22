@@ -8,6 +8,9 @@ layout: default
   </header>
 
   <div class="post-content">
+    {% if page.unity_dir %}
+      {% include page__unity.html %}
+    {% endif %}
     {{ content }}
   </div>
 
