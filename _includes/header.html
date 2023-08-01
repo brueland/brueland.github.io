@@ -18,12 +18,6 @@
           {% if my_page.title %}
           <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
           {% endif %}
-          {% if my_page.unity_dir %}
-            <head>
-              <link rel="shortcut icon" href="{{ site.baseurl }}/games/{{page.unity_dir}}/TemplateData/favicon.ico">
-              <link rel="stylesheet" href="{{ site.baseurl }}/games/{{page.unity_dir}}/TemplateData/style.css">
-            </head>
-          {% endif %}
         {% endfor %}
       </div>
     </nav>
