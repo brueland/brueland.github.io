@@ -3,14 +3,13 @@ layout: home
 title: Home
 permalink: /
 ---
-<div align="center">
-
 # Velkommen to Brue.land!
+
 
 <img src="https://github.com/brueland.png" alt="Selfie" style="width: 25%; height: 25%;">
 
-Wesley Brueland \| He/Him
-</div>
+
+### Wesley Brueland \| He/Him
 
 I'm a Machine Learning Engineer with a passion for figuring out the "how?". Formerly a rocket surgeon, I've pivoted to the tech world, where I blend my love for science, engineering, and technology with practical applications.
 
