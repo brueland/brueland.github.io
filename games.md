@@ -3,7 +3,7 @@ layout: page
 title: Games
 permalink: /games/
 ---
-Links to Web/OpenGL builds of various Unity games I've built.
+Links to Web/OpenGL builds of various Unity and Godot games I've built.
 
 [Roll A Ball Unity Tutorial](https://brue.land/RollABall/)
 
