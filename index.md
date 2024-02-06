@@ -3,8 +3,6 @@ layout: default
 title: Home
 permalink: /
 ---
-<center>
-
 
 # Velkommen to Brue.land!
 
@@ -13,7 +11,8 @@ permalink: /
 
 
 ### Wesley Brueland \| He/Him
-</center>
+
+
 I'm a Machine Learning Engineer with a passion for figuring out the "how?".
 Formerly a rocket surgeon, I've pivoted to the tech world, where I blend my love for science, engineering, and technology with practical applications.
 
