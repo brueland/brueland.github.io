@@ -6,8 +6,6 @@ date:   2024-02-06 01:14:44 -0600
 categories: ramble
 ---
 
-## Fortune Cookies, Spotify Shuffle, and Blasphemy
-
 Hy-Vee has recently kicked off a new promotion called "Fortune Frenzy" where they combine fortune cookies and a [sweepstakes](https://www.hy-vee.com/).
 
 This may not seem like a radical thing to be writing about, but when I first saw an ad for this promotion interrupt my viewing of "Bob's Burgers" the other night, I immediately understood the impact blasphemy must hold for some.
