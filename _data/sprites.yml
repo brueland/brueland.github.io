@@ -1,0 +1,9 @@
+- name: "Clacktus"
+  gif_url: "https://raw.githubusercontent.com/pixel_sprites/main/Clacktus.gif"
+  description: "Spiky lil guy, ready for a dust up"
+  tags: ["animation", "character", "enemy"]
+
+- name: "Aerolipile"
+  gif_url: "https://raw.githubusercontent.com/pixel_sprites/main/BlueRustDrone.gif"
+  description: "Steam-punk aeolipile for remote aerial monitoring"
+  tags: ["animation", "enemy", "environment"]
