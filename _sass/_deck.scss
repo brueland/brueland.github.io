@@ -171,11 +171,16 @@
 .deck-card-name {
     display: block;
     font-family: $px-font-display;
-    font-size: 12px;
+    // Scales with the card so a long title shrinks instead of spilling out
+    // of the plate. LORDFARQUADZILLA is 16 unbreakable characters and was
+    // the case that set this.
+    font-size: clamp(7px, calc(var(--card-w) * 0.036), 12px);
     line-height: 1.45;
     color: $px-text;
     margin: 0 0 8px;
     text-shadow: 0 2px 0 $px-ink;
+    // Safety net for the narrowest cards, where even 7px will not fit.
+    overflow-wrap: anywhere;
 }
 
 .deck-card-meta {
@@ -256,6 +261,7 @@
 
 .deck-panel-title {
     font-family: $px-font-display;
+    overflow-wrap: anywhere;
     font-size: 21px;
     line-height: 1.4;
     color: $px-text;
@@ -497,6 +503,7 @@ a.deck-panel-award {
         font-size: 13px;
         color: $px-text;
         margin-bottom: 10px;
+        overflow-wrap: anywhere;
     }
 
     p {
