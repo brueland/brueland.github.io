@@ -59,7 +59,7 @@
   kind: jam
   sprite: dog
   year: 2024
-  engine: Godot
+  engine: Unity
   event: Pirate Software Game Jam 16
   event_url: https://itch.io/jam/pirate16
   team: true
@@ -109,7 +109,7 @@
   kind: jam
   sprite: house
   year: 2025
-  engine: Unity
+  engine: Godot
   event: Playful.AI Jam - AFK Edition
   event_url: https://itch.io/jam/playfulai-jam-afk-edition
   team: true
