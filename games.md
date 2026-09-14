@@ -1,79 +1,64 @@
 ---
 layout: default
-title: Games
+title: Portfolio
 permalink: /games/
----
-# Wesley Brueland – Game Developer
-
-Welcome! I’m an ML engineer and game developer passionate about combining creative design with solid engineering. I love building games that experiment with mechanics, AI, and player experience—whether it’s through jams, solo projects, or collaborative teams.  
-
+body_class: deck-page
 ---
 
-## Skills & Tools  
-- **Engines:** Unity, Godot  
-- **Languages:** C#, GDScript, GLSL, Python  
-- **Tech:** OpenGL, Git, WebGL builds, AI/ML integration, Procedural Generation  
-- **Other:** Gameplay programming, game design/polish, rapid prototyping for game jams  
+<div class="deck-intro">
+  <p class="deck-intro-eyebrow">Wesley Brueland // ML Engineer &amp; Game Developer</p>
+  <h1>The Deck</h1>
+  {% assign here = site.data.projects | where: 'playable_here', true %}
+  <p class="deck-intro-lede">
+    Every project I have shipped, stacked into one pile. Scroll to flick
+    through the deck, then click the card facing you to open it.
+    A number of them run straight in your browser, hosted here on
+    brue.land using WebGL; the rest live on itch.io.
+  </p>
+</div>
 
----
+{% include deck.html %}
 
-## Featured Projects  
+<div class="deck-outro">
 
-### [Galactic Marbles](https://brueland.itch.io/galactic-marbles)  
-🏆 *Excellence Award – Playful.AI Game Jam*  
-A cosmic merge experiment where players combine asteroids into planets and planets into solar systems, with adaptive music layers that evolve as the universe expands.  
+  {% include reviews.html %}
 
-- Built in **Unity** – WebGL + desktop builds  
+  <h2>Skills &amp; Tools</h2>
 
----
+  <div class="px-grid">
+    <div class="px-tile">
+      <h3>Engines</h3>
+      <p>Unity, Godot</p>
+    </div>
+    <div class="px-tile">
+      <h3>Languages</h3>
+      <p>C#, GDScript, GLSL, Python</p>
+    </div>
+    <div class="px-tile">
+      <h3>Tech</h3>
+      <p>OpenGL, Git, WebGL builds, AI/ML integration, procedural generation</p>
+    </div>
+    <div class="px-tile">
+      <h3>Craft</h3>
+      <p>Gameplay programming, game design and polish, rapid jam prototyping</p>
+    </div>
+  </div>
 
-### [Blue Rust](https://knockout-forge.itch.io/blue-rust)  
-🏆 *P1 Ignite Jam Winner – Best Theme Fit, Best Art, Most Accessible, Emotional Masterpiece, Best Narrative*  
-Pixel art metroidvania platformer with steampunk aesthetics, developed in Godot. Focuses on exploration and unique movement mechanics.  
+  <h2>Awards &amp; Recognition</h2>
 
-- Built in **Godot**  
+  <ul class="px-list">
+    <li><strong>Excellence Award</strong> &mdash; Playful.AI Game Jam, for <em>Galactic Marbles</em></li>
+    <li><strong>P1 Ignite Jam Winner</strong> &mdash; Best Theme Fit, Best Art, Most Accessible, Emotional Masterpiece, and Best Narrative, for <em>Blue Rust</em></li>
+    <li><strong>Score Space Jam #32</strong> &mdash; Top 30 of 71, for <em>Reel Legends</em></li>
+  </ul>
 
----
+  <h2>Find Me</h2>
 
-## Game Jam Projects  
+  <div class="deck-panel-links">
+    <a class="pixel-btn" href="https://brueland.itch.io">itch.io &#9656;</a>
+    <a class="pixel-btn is-ghost" href="https://github.com/brueland">GitHub &#9656;</a>
+    <a class="pixel-btn is-ghost" href="https://www.linkedin.com/in/wesleybrueland">LinkedIn &#9656;</a>
+    <a class="pixel-btn is-ghost" href="mailto:wesbrueland@gmail.com">Email &#9656;</a>
+  </div>
 
-- **[Space Dogs](https://tlsaxt.itch.io/spacedogs)** – *Pirate Software Game Jam 16*  
-  Explore as an alien who crash-lands and befriends three dogs to dig deeper into an alien world.  
-
-- **[Reel Legends](https://brueland.itch.io/reel-legends)** – *Score Space Jam #32 (Top 30/71)*  
-  A relaxing fishing simulator built in Unity with touch controls, designed for mobile play.  
-
-- **[Blue Rust: Memoria](https://brueland.itch.io/blue-rust-memoria)** – *Pirate Software Game Jam 15*  
-  A standalone story level for Blue Rust, exploring a dark laboratory with narrative twists.  
-
----
-
-## Experiments & Technical Demos  
-
-- **[Grow A Spine](https://brue.land/GrowASpine/)** – Unity Q-Learning experiment demonstrating ML in a game engine.  
-- **[Roll A Ball (Unity Tutorial)](https://brue.land/RollABall/)** – Hosted via GitHub Pages to test WebGL deployment.  
-- **[LORDFARQUADZILLA Music Game](https://brue.land/LORDFARQUADZILLA/)** – A rhythm-based experiment built in Godot using music/art from the band *Bilmuri*.  
-
----
-
-## Academic Work  
-
-- **[Sid the Squirrel](https://www.youtube.com/watch?v=l4dxJOaDrnA&ab_channel=WesleyBrueland)** – Final project for *OMSCS CS6457*.  
-  A 3D platformer developed in Unity, with trailer showcasing gameplay and design.  
-
----
-
-## Awards & Recognition  
-
-- *Excellence Award* – Playful.AI Game Jam (*Galactic Marbles*)  
-- *P1 Ignite Jam Winner* – Best Theme Fit, Best Art, Most Accessible, Emotional Masterpiece, Best Narrative (*Blue Rust*)  
-- *Score Space Jam #32* – Top 30 of 71 (*Reel Legends*)  
-
----
-
-## Contact & Links  
-
-- **GitHub:** [github.com/brueland](https://github.com/brueland)  
-- **Itch.io:** [brueland.itch.io](https://brueland.itch.io)  
-- **LinkedIn:** [linkedin.com/in/wesleybrueland](https://www.linkedin.com/in/wesleybrueland)  
-- **Email:** wesbrueland@gmail.com
+</div>

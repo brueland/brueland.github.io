@@ -1,0 +1,124 @@
+{% assign projects = site.data.projects %}
+{% assign total = projects | size %}
+
+<section class="deck-stage" data-deck-stage>
+
+  <div class="deck-sticky">
+    <div class="deck-arena">
+
+      {% comment %}
+        The stack itself is decorative: it duplicates the panel beside it, so
+        it is hidden from assistive tech and kept out of the tab order. The
+        panel to the right carries the real headings and links.
+      {% endcomment %}
+      <div class="deck" data-deck aria-hidden="true">
+        {% for p in projects %}
+        <article class="deck-card" data-card>
+          <a class="deck-card-link" href="{{ p.links[0].url }}" tabindex="-1" target="_blank" rel="noopener">
+            <span class="deck-card-face">
+              <span class="deck-card-shade" data-shade></span>
+              <span class="deck-card-tab">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <span class="deck-card-art">
+                <canvas data-card-art
+                        data-sprite="{{ p.sprite }}"
+                        data-kind="{{ p.kind }}"
+                        data-seed="{{ forloop.index }}"></canvas>
+                {% if p.badge %}<span class="deck-card-badge">{{ p.badge }}</span>{% endif %}
+                {% if p.playable_here %}<span class="deck-card-hosted">Hosted on brue.land</span>{% endif %}
+              </span>
+              <span class="deck-card-plate">
+                <span class="deck-card-kind">{% case p.kind %}{% when 'award' %}Award Winner{% when 'jam' %}Game Jam{% when 'experiment' %}Experiment{% when 'academic' %}Academic{% else %}{{ p.kind }}{% endcase %}</span>
+                <span class="deck-card-name">{{ p.title }}</span>
+                <span class="deck-card-meta">{{ p.engine }}{% if p.engine and p.year %} &middot; {% endif %}{{ p.year }}</span>
+              </span>
+            </span>
+          </a>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="deck-panel">
+        {% for p in projects %}
+        <div class="deck-panel-item" data-panel>
+          <p class="deck-panel-eyebrow">
+            <span class="deck-panel-count">{{ forloop.index | prepend: '0' | slice: -2, 2 }} / {{ total | prepend: '0' | slice: -2, 2 }}</span>
+            {% if p.year %}<span class="deck-panel-dot">//</span><span>{{ p.year }}</span>{% endif %}
+            {% if p.engine %}<span class="deck-panel-dot">//</span><span>{{ p.engine }}</span>{% endif %}
+          </p>
+
+          <h2 class="deck-panel-title">{{ p.title }}</h2>
+          <p class="deck-panel-sub">{{ p.subtitle }}</p>
+
+          {% capture award %}{% if p.badge %}&#9733; {{ p.badge }}{% if p.event %} &mdash; {{ p.event }}{% endif %}{% elsif p.event %}{{ p.event }}{% endif %}{% endcapture %}
+          {% if award != '' %}
+            {% if p.event_url %}
+          <a class="deck-panel-award is-link" href="{{ p.event_url }}" target="_blank" rel="noopener"
+             aria-label="{{ p.event }} jam page">{{ award }} &#9656;</a>
+            {% else %}
+          <p class="deck-panel-award">{{ award }}</p>
+            {% endif %}
+          {% endif %}
+
+          {% if p.playable_here %}
+          <p class="deck-panel-here">&#9654; Runs in your browser, hosted right here on brue.land</p>
+          {% endif %}
+
+          <p class="deck-panel-blurb">{{ p.blurb }}</p>
+
+          {% if p.review %}
+          <blockquote class="deck-panel-quote">
+            <span class="deck-panel-quote-text">{{ p.review.pull }}</span>
+            <cite>{{ p.review.source | default: 'Judge' }}, {{ p.event }}</cite>
+          </blockquote>
+          {% endif %}
+
+          {% if p.tags or p.team %}
+          <ul class="deck-panel-tags">
+            {% if p.team %}<li class="is-team">Team Project</li>{% endif %}
+            {% for tag in p.tags %}<li>{{ tag }}</li>{% endfor %}
+          </ul>
+          {% endif %}
+
+          <div class="deck-panel-links">
+            {% for link in p.links %}
+            <a class="pixel-btn{% unless forloop.first %} is-ghost{% endunless %}"
+               href="{{ link.url }}"
+               target="_blank"
+               rel="noopener"
+               aria-label="{{ link.label }}: {{ p.title }}">{{ link.label }} &#9656;</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <div class="deck-controls">
+      <button type="button" class="deck-arrow" data-deck-prev aria-label="Previous project">&#9664;</button>
+      <div class="deck-pips">
+        {% for p in projects %}
+        <button type="button" class="deck-pip" data-pip aria-label="Show {{ p.title }}"></button>
+        {% endfor %}
+      </div>
+      <button type="button" class="deck-arrow" data-deck-next aria-label="Next project">&#9654;</button>
+      <p class="deck-hint">Scroll <span class="deck-hint-scroll">&#9660;</span></p>
+    </div>
+  </div>
+
+  {% comment %}
+    Shown whenever the deck does not boot: no JS, or reduced motion.
+    Same projects, same links, no animation.
+  {% endcomment %}
+  <ul class="deck-fallback">
+    {% for p in projects %}
+    <li class="deck-fallback-item">
+      <p class="deck-fallback-meta">{% if p.year %}{{ p.year }}{% endif %}{% if p.engine %} // {{ p.engine }}{% endif %}{% if p.badge %} // {{ p.badge }}{% endif %}</p>
+      <h3>{{ p.title }}</h3>
+      <p>{{ p.blurb }}{% if p.playable_here %} <em>Runs in your browser, hosted here.</em>{% endif %}{% if p.team %} <em>Built with a team.</em>{% endif %}</p>
+      <p>{% for link in p.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% unless forloop.last %} &middot; {% endunless %}{% endfor %}</p>
+    </li>
+    {% endfor %}
+  </ul>
+
+</section>

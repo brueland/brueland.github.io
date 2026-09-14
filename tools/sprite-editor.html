@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprite Editor &mdash; Brue Land deck</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
+<style>
+  :root {
+    --void: #0b0a14;
+    --ink: #05040b;
+    --deep: #14121f;
+    --panel: #1c1930;
+    --slate: #2b2746;
+    --muted: #9a93c4;
+    --text: #e9e6ff;
+    --cyan: #5fd4f0;
+    --violet: #b08bd6;
+    --gold: #f2c14e;
+    --ember: #e0503f;
+    --display: "Press Start 2P", "Courier New", monospace;
+    --body: "VT323", "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 28px 20px 60px;
+    background: var(--void);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 20px;
+    -webkit-font-smoothing: none;
+  }
+
+  canvas { image-rendering: pixelated; }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 19px;
+    margin: 0 0 8px;
+    text-shadow: 0 3px 0 var(--ink);
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 11px;
+    color: var(--cyan);
+    margin: 0 0 14px;
+  }
+
+  .lede { color: var(--muted); margin: 0 0 26px; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; }
+
+  .cols {
+    display: grid;
+    grid-template-columns: auto 230px minmax(280px, 1fr);
+    gap: 26px;
+    align-items: start;
+  }
+
+  .card {
+    background: var(--panel);
+    padding: 20px;
+    box-shadow: 0 -4px 0 var(--slate), 0 4px 0 var(--slate),
+                -4px 0 0 var(--slate), 4px 0 0 var(--slate);
+  }
+
+  /* ---------------------------------------------------------- paint grid */
+
+  #gridWrap {
+    position: relative;
+    width: 512px;
+    height: 512px;
+    /* Checkerboard shows through transparent cells. */
+    background-color: #1a1828;
+    background-image:
+      linear-gradient(45deg, #221f33 25%, transparent 25%, transparent 75%, #221f33 75%),
+      linear-gradient(45deg, #221f33 25%, transparent 25%, transparent 75%, #221f33 75%);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  #grid, #guides { position: absolute; inset: 0; width: 512px; height: 512px; }
+  #guides { pointer-events: none; }
+
+  .gridbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    max-width: 512px;
+  }
+
+  /* ------------------------------------------------------------ controls */
+
+  button, select {
+    font-family: var(--display);
+    font-size: 9px;
+    line-height: 1;
+    color: var(--text);
+    background: var(--deep);
+    border: 0;
+    padding: 10px 11px;
+    cursor: pointer;
+    box-shadow: 0 -3px 0 var(--slate), 0 3px 0 var(--slate),
+                -3px 0 0 var(--slate), 3px 0 0 var(--slate);
+  }
+
+  button:hover, select:hover { color: var(--ink); background: var(--cyan); }
+  button.on { color: var(--ink); background: var(--gold); }
+  button:disabled { color: var(--slate); cursor: default; background: var(--deep); }
+
+  select { font-family: var(--body); font-size: 17px; padding: 6px 8px; }
+
+  label { display: block; font-size: 17px; color: var(--muted); margin: 14px 0 6px; }
+
+  /* ------------------------------------------------------------- palette */
+
+  #palette { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+
+  .swatch {
+    position: relative;
+    height: 52px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 3px var(--ink);
+    font-family: var(--display);
+    font-size: 9px;
+  }
+
+  .swatch span {
+    position: absolute;
+    left: 3px;
+    bottom: 3px;
+    padding: 2px 3px;
+    background: rgba(5, 4, 11, 0.75);
+    color: #fff;
+  }
+
+  .swatch.sel { box-shadow: inset 0 0 0 3px var(--ink), 0 0 0 4px var(--gold); }
+
+  .swatch.alpha {
+    background-color: #1a1828;
+    background-image:
+      linear-gradient(45deg, #322e4a 25%, transparent 25%, transparent 75%, #322e4a 75%),
+      linear-gradient(45deg, #322e4a 25%, transparent 25%, transparent 75%, #322e4a 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+
+  /* ------------------------------------------------------------- preview */
+
+  .cardface {
+    width: 240px;
+    background: var(--panel);
+    box-shadow: 0 -4px 0 var(--ink), 0 4px 0 var(--ink),
+                -4px 0 0 var(--ink), 4px 0 0 var(--ink),
+                0 -8px 0 var(--cyan), 0 8px 0 var(--cyan),
+                -8px 0 0 var(--cyan), 8px 0 0 var(--cyan);
+    margin: 8px 8px 20px;
+  }
+
+  #preview { display: block; width: 240px; height: 300px; background: var(--ink); }
+
+  .plate { padding: 11px 12px 13px; border-top: 4px solid var(--ink); }
+  .plate .kind { font-family: var(--display); font-size: 8px; color: var(--violet); }
+  .plate .name { font-family: var(--display); font-size: 11px; margin: 8px 0 7px; }
+  .plate .meta { font-size: 16px; color: var(--muted); }
+
+  #thumbs { display: flex; gap: 10px; margin-top: 6px; }
+  #thumbs canvas { width: 64px; height: 80px; background: var(--ink); }
+
+  /* -------------------------------------------------------------- output */
+
+  textarea {
+    width: 100%;
+    min-height: 210px;
+    background: var(--deep);
+    color: var(--text);
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    border: 0;
+    padding: 14px;
+    resize: vertical;
+    box-shadow: inset 0 0 0 3px var(--slate);
+  }
+
+  .out { margin-top: 26px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+  .note { color: var(--muted); font-size: 18px; }
+  .ok { color: var(--cyan); }
+  .bad { color: var(--ember); }
+
+  kbd {
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    background: var(--deep);
+    padding: 1px 6px;
+    box-shadow: inset 0 0 0 2px var(--slate);
+  }
+
+  .help { margin-top: 26px; color: var(--muted); }
+  .help li { margin-bottom: 7px; }
+
+  @media (max-width: 1100px) {
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    #gridWrap, #grid, #guides { width: min(92vw, 512px); height: min(92vw, 512px); }
+    .gridbar { max-width: none; }
+    #palette { grid-template-columns: repeat(6, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Deck Sprite Editor</h1>
+  <p class="lede">
+    Draw a 16&times;16 sprite, watch it on a real card, copy the block into
+    <code>js/deck.js</code>. Output is always exactly 16&times;16, so it cannot
+    produce the kind of miscounted row that silently draws nothing.
+  </p>
+
+  <div class="cols">
+
+    <!-- ------------------------------------------------------ paint grid -->
+    <div class="card">
+      <h2>Canvas</h2>
+      <div id="gridWrap">
+        <canvas id="grid" width="512" height="512"></canvas>
+        <canvas id="guides" width="512" height="512"></canvas>
+      </div>
+      <div class="gridbar">
+        <button id="undo" title="Ctrl+Z">Undo</button>
+        <button id="redo" title="Ctrl+Shift+Z">Redo</button>
+        <button id="clear">Clear</button>
+        <button id="mirror" title="Copy the left half onto the right">Mirror &#8644;</button>
+        <button id="flipH">Flip H</button>
+        <button id="flipV">Flip V</button>
+        <button id="up">&#9650;</button>
+        <button id="down">&#9660;</button>
+        <button id="left">&#9664;</button>
+        <button id="right">&#9654;</button>
+        <button id="outline" title="Add k outline around filled pixels">Outline</button>
+        <button id="toggleGuides" class="on">Guides</button>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------- palette -->
+    <div class="card">
+      <h2>Palette</h2>
+      <div id="palette"></div>
+      <label for="loadSprite">Edit an existing sprite</label>
+      <select id="loadSprite"></select>
+      <label for="kind">Preview backdrop</label>
+      <select id="kind">
+        <option value="award">award</option>
+        <option value="jam" selected>jam</option>
+        <option value="experiment">experiment</option>
+        <option value="academic">academic</option>
+      </select>
+      <label for="name">Sprite name</label>
+      <input id="name" value="mysprite" style="width:100%;background:var(--deep);color:var(--text);
+        font-family:var(--body);font-size:18px;border:0;padding:8px 10px;
+        box-shadow:inset 0 0 0 3px var(--slate);">
+    </div>
+
+    <!-- --------------------------------------------------------- preview -->
+    <div class="card">
+      <h2>On a card</h2>
+      <div class="cardface">
+        <canvas id="preview"></canvas>
+        <div class="plate">
+          <div class="kind">Preview</div>
+          <div class="name" id="pvName">My Sprite</div>
+          <div class="meta">Godot &middot; 2026</div>
+        </div>
+      </div>
+      <h2>Every backdrop</h2>
+      <div id="thumbs"></div>
+    </div>
+
+  </div>
+
+  <!-- ----------------------------------------------------------- output -->
+  <div class="out">
+    <h2>Paste into js/deck.js</h2>
+    <textarea id="out" spellcheck="false" readonly></textarea>
+    <div class="row">
+      <button id="copy">Copy block</button>
+      <button id="copyYaml">Copy YAML line</button>
+      <span class="note" id="status"></span>
+    </div>
+
+    <h2 style="margin-top:28px">Load a block back in</h2>
+    <textarea id="in" spellcheck="false"
+      placeholder="Paste a sprite block from js/deck.js here to edit it, then press Load."></textarea>
+    <div class="row">
+      <button id="load">Load</button>
+      <span class="note" id="loadStatus"></span>
+    </div>
+  </div>
+
+  <div class="help">
+    <h2>How to use</h2>
+    <ul>
+      <li>Click or drag to paint. <kbd>Right-click</kbd> or hold <kbd>Shift</kbd> erases.</li>
+      <li>Hold <kbd>Alt</kbd> to pick up the colour under the cursor.</li>
+      <li>Press a palette letter (<kbd>k</kbd>, <kbd>w</kbd>, <kbd>c</kbd>&hellip;) to select it, <kbd>.</kbd> for transparent.</li>
+      <li><strong>Mirror</strong> copies the left half onto the right &mdash; how the gear and ball were made.</li>
+      <li><strong>Outline</strong> wraps every filled pixel in <kbd>k</kbd>, which is what gives these sprites their read.</li>
+      <li>Paste the block into the <code>SPRITES</code> table in <code>js/deck.js</code>, then point a
+        project at it with <code>sprite: yourname</code> in <code>_data/projects.yml</code>.</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- The deck's own art code: palette, sprite table, and renderer. Loading it
+     here means the preview is the real thing, not a second implementation. -->
+<script src="../js/deck.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var art = window.BrueDeckArt;
+  if (!art) {
+    document.body.innerHTML =
+      '<p style="font-family:monospace;color:#e0503f;padding:40px">' +
+      'Could not load ../js/deck.js. Open this file from inside the repo so ' +
+      'the relative path resolves.</p>';
+    return;
+  }
+
+  var SIZE = 16;
+  var CELL = 32;              // on-screen pixels per sprite pixel
+  var EMPTY = '.';
+
+  var grid = document.getElementById('grid');
+  var gctx = grid.getContext('2d');
+  var guides = document.getElementById('guides');
+  var vctx = guides.getContext('2d');
+
+  // Model: SIZE x SIZE array of palette letters.
+  var cells = blank();
+  var undoStack = [];
+  var redoStack = [];
+  var current = 'k';
+  var showGuides = true;
+  var painting = false;
+  var eraseMode = false;
+
+  function blank() {
+    var a = [];
+    for (var y = 0; y < SIZE; y++) {
+      a.push(new Array(SIZE).fill(EMPTY));
+    }
+    return a;
+  }
+
+  function clone(a) { return a.map(function (r) { return r.slice(); }); }
+
+  function snapshot() {
+    undoStack.push(clone(cells));
+    if (undoStack.length > 100) undoStack.shift();
+    redoStack.length = 0;
+    refreshUndo();
+  }
+
+  function refreshUndo() {
+    document.getElementById('undo').disabled = undoStack.length === 0;
+    document.getElementById('redo').disabled = redoStack.length === 0;
+  }
+
+  // ------------------------------------------------------------- palette
+
+  var letters = Object.keys(art.PAL);
+
+  function buildPalette() {
+    var host = document.getElementById('palette');
+    letters.forEach(function (ch) {
+      var b = document.createElement('button');
+      b.className = 'swatch' + (art.PAL[ch] ? '' : ' alpha');
+      if (art.PAL[ch]) b.style.background = art.PAL[ch];
+      b.innerHTML = '<span>' + (ch === EMPTY ? '. off' : ch) + '</span>';
+      b.title = ch === EMPTY ? 'transparent' : ch + '  ' + art.PAL[ch];
+      b.addEventListener('click', function () { select(ch); });
+      b.dataset.ch = ch;
+      host.appendChild(b);
+    });
+    select('k');
+  }
+
+  function select(ch) {
+    current = ch;
+    [].forEach.call(document.querySelectorAll('.swatch'), function (b) {
+      b.classList.toggle('sel', b.dataset.ch === ch);
+    });
+  }
+
+  // -------------------------------------------------------------- drawing
+
+  function drawGrid() {
+    gctx.clearRect(0, 0, grid.width, grid.height);
+    for (var y = 0; y < SIZE; y++) {
+      for (var x = 0; x < SIZE; x++) {
+        var c = art.PAL[cells[y][x]];
+        if (!c) continue;
+        gctx.fillStyle = c;
+        gctx.fillRect(x * CELL, y * CELL, CELL, CELL);
+      }
+    }
+  }
+
+  function drawGuides() {
+    vctx.clearRect(0, 0, guides.width, guides.height);
+    if (!showGuides) return;
+    vctx.strokeStyle = 'rgba(155,148,200,0.20)';
+    vctx.lineWidth = 1;
+    for (var i = 1; i < SIZE; i++) {
+      vctx.beginPath();
+      vctx.moveTo(i * CELL + 0.5, 0);
+      vctx.lineTo(i * CELL + 0.5, guides.height);
+      vctx.moveTo(0, i * CELL + 0.5);
+      vctx.lineTo(guides.width, i * CELL + 0.5);
+      vctx.stroke();
+    }
+    // Centre lines, the axis most sprites are built around.
+    vctx.strokeStyle = 'rgba(242,193,78,0.45)';
+    vctx.beginPath();
+    vctx.moveTo(8 * CELL + 0.5, 0);
+    vctx.lineTo(8 * CELL + 0.5, guides.height);
+    vctx.moveTo(0, 8 * CELL + 0.5);
+    vctx.lineTo(guides.width, 8 * CELL + 0.5);
+    vctx.stroke();
+  }
+
+  // -------------------------------------------------------------- preview
+
+  function rows() {
+    return cells.map(function (r) { return r.join(''); });
+  }
+
+  function renderPreview() {
+    var kind = document.getElementById('kind').value;
+    art.paintArt(document.getElementById('preview'), rows(), kind, 3, 80);
+
+    var host = document.getElementById('thumbs');
+    host.innerHTML = '';
+    Object.keys(art.SCENES).forEach(function (k) {
+      var cv = document.createElement('canvas');
+      cv.title = k;
+      host.appendChild(cv);
+      art.paintArt(cv, rows(), k, 3, 80);
+    });
+  }
+
+  function renderOutput() {
+    var name = (document.getElementById('name').value || 'mysprite')
+      .trim().replace(/[^A-Za-z0-9_]/g, '') || 'mysprite';
+    var body = rows().map(function (r) { return "      '" + r + "'"; }).join(',\n');
+    document.getElementById('out').value =
+      '    ' + name + ': [\n' + body + '\n    ],';
+    document.getElementById('pvName').textContent = name;
+
+    var bad = rows().filter(function (r) { return r.length !== SIZE; }).length;
+    var st = document.getElementById('status');
+    st.className = 'note ' + (bad ? 'bad' : 'ok');
+    st.textContent = bad ? bad + ' malformed rows' : '16 rows x 16 chars';
+  }
+
+  function render() {
+    drawGrid();
+    drawGuides();
+    renderPreview();
+    renderOutput();
+  }
+
+  // --------------------------------------------------------------- input
+
+  function cellAt(ev) {
+    var r = grid.getBoundingClientRect();
+    var x = Math.floor(((ev.clientX - r.left) / r.width) * SIZE);
+    var y = Math.floor(((ev.clientY - r.top) / r.height) * SIZE);
+    if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) return null;
+    return { x: x, y: y };
+  }
+
+  function paint(ev) {
+    var p = cellAt(ev);
+    if (!p) return;
+    if (ev.altKey) { select(cells[p.y][p.x]); return; }
+    var ch = eraseMode || ev.shiftKey || ev.buttons === 2 ? EMPTY : current;
+    if (cells[p.y][p.x] === ch) return;
+    cells[p.y][p.x] = ch;
+    render();
+  }
+
+  var wrap = document.getElementById('gridWrap');
+  wrap.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  wrap.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    wrap.setPointerCapture(e.pointerId);
+    snapshot();
+    eraseMode = e.button === 2;
+    painting = true;
+    paint(e);
+  });
+  wrap.addEventListener('pointermove', function (e) { if (painting) paint(e); });
+  addEventListener('pointerup', function () { painting = false; eraseMode = false; });
+
+  addEventListener('keydown', function (e) {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      e.shiftKey ? redo() : undo();
+      return;
+    }
+    if (letters.indexOf(e.key) !== -1) { select(e.key); e.preventDefault(); }
+  });
+
+  // ------------------------------------------------------------ transforms
+
+  function apply(fn) {
+    snapshot();
+    fn();
+    render();
+  }
+
+  function undo() {
+    if (!undoStack.length) return;
+    redoStack.push(clone(cells));
+    cells = undoStack.pop();
+    refreshUndo();
+    render();
+  }
+
+  function redo() {
+    if (!redoStack.length) return;
+    undoStack.push(clone(cells));
+    cells = redoStack.pop();
+    refreshUndo();
+    render();
+  }
+
+  function shift(dx, dy) {
+    var next = blank();
+    for (var y = 0; y < SIZE; y++) {
+      for (var x = 0; x < SIZE; x++) {
+        var ny = y + dy, nx = x + dx;
+        if (ny >= 0 && ny < SIZE && nx >= 0 && nx < SIZE) next[ny][nx] = cells[y][x];
+      }
+    }
+    cells = next;
+  }
+
+  // Wraps every filled pixel in outline, which is what makes these sprites
+  // read at card size.
+  function outline() {
+    var next = clone(cells);
+    for (var y = 0; y < SIZE; y++) {
+      for (var x = 0; x < SIZE; x++) {
+        if (cells[y][x] !== EMPTY) continue;
+        var touches = [[1, 0], [-1, 0], [0, 1], [0, -1]].some(function (d) {
+          var ny = y + d[1], nx = x + d[0];
+          return ny >= 0 && ny < SIZE && nx >= 0 && nx < SIZE &&
+            cells[ny][nx] !== EMPTY && cells[ny][nx] !== 'k';
+        });
+        if (touches) next[y][x] = 'k';
+      }
+    }
+    cells = next;
+  }
+
+  var actions = {
+    undo: undo,
+    redo: redo,
+    clear: function () { apply(function () { cells = blank(); }); },
+    mirror: function () {
+      apply(function () {
+        for (var y = 0; y < SIZE; y++) {
+          for (var x = 0; x < SIZE / 2; x++) cells[y][SIZE - 1 - x] = cells[y][x];
+        }
+      });
+    },
+    flipH: function () { apply(function () { cells.forEach(function (r) { r.reverse(); }); }); },
+    flipV: function () { apply(function () { cells.reverse(); }); },
+    up: function () { apply(function () { shift(0, -1); }); },
+    down: function () { apply(function () { shift(0, 1); }); },
+    left: function () { apply(function () { shift(-1, 0); }); },
+    right: function () { apply(function () { shift(1, 0); }); },
+    outline: function () { apply(outline); },
+    toggleGuides: function () {
+      showGuides = !showGuides;
+      document.getElementById('toggleGuides').classList.toggle('on', showGuides);
+      render();
+    }
+  };
+
+  Object.keys(actions).forEach(function (id) {
+    document.getElementById(id).addEventListener('click', actions[id]);
+  });
+
+  // ------------------------------------------------------------ load/save
+
+  function loadRows(rs, name) {
+    cells = blank();
+    for (var y = 0; y < Math.min(SIZE, rs.length); y++) {
+      for (var x = 0; x < Math.min(SIZE, rs[y].length); x++) {
+        var ch = rs[y].charAt(x);
+        cells[y][x] = art.PAL.hasOwnProperty(ch) ? ch : EMPTY;
+      }
+    }
+    if (name) document.getElementById('name').value = name;
+    render();
+  }
+
+  var picker = document.getElementById('loadSprite');
+  picker.innerHTML = '<option value="">-- new blank sprite --</option>' +
+    Object.keys(art.SPRITES).map(function (k) {
+      return '<option value="' + k + '">' + k + '</option>';
+    }).join('');
+
+  picker.addEventListener('change', function () {
+    snapshot();
+    var k = picker.value;
+    if (!k) { cells = blank(); document.getElementById('name').value = 'mysprite'; render(); return; }
+    loadRows(art.SPRITES[k], k);
+  });
+
+  document.getElementById('kind').addEventListener('change', render);
+  document.getElementById('name').addEventListener('input', renderOutput);
+
+  document.getElementById('load').addEventListener('click', function () {
+    var txt = document.getElementById('in').value;
+    var rs = (txt.match(/'([.a-z]*)'/g) || []).map(function (s) { return s.slice(1, -1); });
+    var nameMatch = txt.match(/([A-Za-z0-9_]+)\s*:\s*\[/);
+    var st = document.getElementById('loadStatus');
+    if (!rs.length) {
+      st.className = 'note bad';
+      st.textContent = 'No quoted rows found in that text.';
+      return;
+    }
+    snapshot();
+    loadRows(rs, nameMatch ? nameMatch[1] : null);
+    st.className = 'note ok';
+    st.textContent = 'Loaded ' + rs.length + ' rows.';
+  });
+
+  function copy(text, label) {
+    var st = document.getElementById('status');
+    function done(ok) {
+      st.className = 'note ' + (ok ? 'ok' : 'bad');
+      st.textContent = ok ? label + ' copied.' : 'Copy failed - select and copy by hand.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+    } else {
+      done(false);
+    }
+  }
+
+  document.getElementById('copy').addEventListener('click', function () {
+    copy(document.getElementById('out').value, 'Sprite block');
+  });
+
+  document.getElementById('copyYaml').addEventListener('click', function () {
+    var name = document.getElementById('pvName').textContent;
+    copy('  sprite: ' + name, 'YAML line');
+  });
+
+  buildPalette();
+  refreshUndo();
+  render();
+})();
+</script>
+</body>
+</html>

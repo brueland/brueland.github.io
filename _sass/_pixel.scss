@@ -1,0 +1,528 @@
+/**
+ * Pixel art design system.
+ *
+ * Loaded last so it overrides the inherited Minima base/layout rules.
+ * Everything here is deliberately hard-edged: no border-radius, no blur,
+ * no sub-pixel shadows. Depth comes from offset solid blocks instead.
+ */
+
+// ---------------------------------------------------------------- palette
+//
+// CRT phosphor. A near-monochrome green ramp carries the whole interface;
+// amber is the single warm accent and is reserved for awards and eyebrows,
+// so it always means "this one is notable". Two accents, no more.
+
+$px-void:    #071109;   // green-black, the page ground
+$px-ink:     #030A05;   // darkest value: outlines and pressed states
+$px-deep:    #0B1810;   // recessed surfaces
+$px-panel:   #0E1C13;   // raised surfaces
+$px-slate:   #1D3626;   // borders between surfaces
+$px-muted:   #74A481;   // secondary text
+$px-text:    #C3EBCB;   // primary text
+
+$px-signal:  #5BE585;   // bright phosphor: links, active card, buttons
+$px-dim:     #9FD8AC;   // pale phosphor: secondary labels
+$px-amber:   #E8A33D;   // the warm accent, awards only
+$px-ember:   #E2564A;   // errors, used sparingly
+$px-green:   #5BE585;   // "runs here" marker, same phosphor as the signal
+
+$px-font-display: "Press Start 2P", "Courier New", monospace;
+$px-font-body:    "VT323", "Courier New", monospace;
+
+$px-unit: 4px;
+
+// ------------------------------------------------------------------ tools
+
+// Notched "pixel" border. Four offset shadows leave the corners empty,
+// which is what reads as a chamfered sprite edge.
+@mixin px-border($color: $px-slate, $w: $px-unit) {
+    box-shadow:
+        0 (-$w) 0 0 $color,
+        0 $w 0 0 $color,
+        (-$w) 0 0 0 $color,
+        $w 0 0 0 $color;
+}
+
+@mixin px-border-2($inner, $outer, $w: $px-unit) {
+    box-shadow:
+        0 (-$w) 0 0 $inner,
+        0 $w 0 0 $inner,
+        (-$w) 0 0 0 $inner,
+        $w 0 0 0 $inner,
+        0 (-$w * 2) 0 0 $outer,
+        0 ($w * 2) 0 0 $outer,
+        (-$w * 2) 0 0 0 $outer,
+        ($w * 2) 0 0 0 $outer;
+}
+
+// 2px checkerboard, used to fake gradients without anti-aliasing.
+@mixin px-dither($color, $size: 4px) {
+    background-image:
+        linear-gradient(45deg, $color 25%, transparent 25%, transparent 75%, $color 75%),
+        linear-gradient(45deg, $color 25%, transparent 25%, transparent 75%, $color 75%);
+    background-size: ($size * 2) ($size * 2);
+    background-position: 0 0, $size $size;
+}
+
+// ------------------------------------------------------------------- base
+
+html {
+    background: $px-void;
+}
+
+body {
+    font-family: $px-font-body;
+    font-size: 21px;
+    line-height: 1.45;
+    color: $px-text;
+    background-color: $px-void;
+    background-image:
+        radial-gradient(circle at 18% 12%, rgba(91, 229, 133, 0.08), transparent 45%),
+        radial-gradient(circle at 82% 78%, rgba(232, 163, 61, 0.07), transparent 50%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: none;
+    text-rendering: geometricPrecision;
+}
+
+img,
+canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+// Scanlines. Kept very faint: enough to read as a CRT, not enough to fight
+// the 8px display type. Sits above everything and takes no input.
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.055) 2px,
+        rgba(0, 0, 0, 0.055) 4px
+    );
+}
+
+::selection {
+    background: $px-signal;
+    color: $px-ink;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $px-font-display;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: $px-text;
+    text-shadow: 0 3px 0 $px-ink;
+}
+
+h1 { font-size: 26px; margin-bottom: 24px; }
+h2 { font-size: 19px; margin-bottom: 18px; color: $px-signal; }
+h3 { font-size: 15px; margin-bottom: 14px; color: $px-dim; }
+h4 { font-size: 13px; }
+
+p, li {
+    color: $px-text;
+}
+
+a {
+    color: $px-signal;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(95, 212, 240, 0.35);
+
+    &:hover,
+    &:focus {
+        color: $px-amber;
+        border-bottom-color: $px-amber;
+    }
+}
+
+hr {
+    height: $px-unit;
+    border: 0;
+    margin: 36px 0;
+    background: $px-slate;
+    @include px-dither(rgba(91, 229, 133, 0.4), 4px);
+}
+
+blockquote {
+    color: $px-muted;
+    border-left: $px-unit solid $px-dim;
+    padding-left: 20px;
+    // The inherited theme sizes these for a 16px sans; VT323 needs more.
+    font-size: 21px;
+    font-style: normal;
+    letter-spacing: normal;
+}
+
+// The inherited theme puts code on a near-white ground, which is invisible
+// against this palette.
+code,
+pre {
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+    border: 0;
+    border-radius: 0;
+}
+
+code {
+    color: $px-signal;
+    background: $px-deep;
+    padding: 2px 6px;
+    box-shadow: inset 0 0 0 2px $px-slate;
+}
+
+pre {
+    background: $px-deep;
+    color: $px-text;
+    padding: 18px;
+    margin: 24px $px-unit;
+    overflow-x: auto;
+    @include px-border($px-slate);
+
+    > code {
+        color: $px-text;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+    }
+}
+
+// Rouge ships light-background token colours; retint the common ones.
+.highlight {
+    background: $px-deep;
+    color: $px-text;
+
+    .c, .c1, .cm, .cs, .cp { color: $px-muted; }
+    .k, .kd, .kn, .kp, .kr, .kt, .kc { color: $px-dim; font-weight: 400; }
+    .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr { color: $px-green; }
+    .m, .mf, .mh, .mi, .mo, .il { color: $px-amber; }
+    .nf, .nb, .nc, .nn { color: $px-signal; }
+    .o, .ow, .p { color: $px-text; }
+    .na, .nv, .vi, .vg, .vc { color: $px-amber; }
+    .err { color: $px-ember; background: none; }
+    .gd { color: $px-ember; }
+    .gi { color: $px-green; }
+}
+
+:focus-visible {
+    outline: $px-unit solid $px-amber;
+    outline-offset: $px-unit;
+}
+
+// ----------------------------------------------------------------- header
+
+.site-header {
+    border: 0;
+    border-top: 0;
+    border-bottom: $px-unit solid $px-slate;
+    background: $px-deep;
+    min-height: 0;
+
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+}
+
+.site-title {
+    float: none;
+    font-family: $px-font-display;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0;
+
+    border-bottom: 0;
+    text-shadow: 0 3px 0 $px-ink;
+
+    &,
+    &:visited {
+        color: $px-amber;
+    }
+
+    &:hover {
+        color: $px-signal;
+    }
+}
+
+.site-nav {
+    float: none;
+    line-height: 1;
+
+    .menu-icon { display: none; }
+
+    .trigger {
+        display: flex;
+        gap: 6px;
+    }
+
+    .page-link {
+        font-family: $px-font-display;
+        font-size: 11px;
+        line-height: 1;
+        color: $px-text;
+        background: $px-panel;
+        padding: 11px 13px;
+        margin: 0;
+        border-bottom: 0;
+        @include px-border($px-slate);
+
+        &:not(:last-child) { margin-right: 6px; }
+
+        &:hover,
+        &:focus {
+            color: $px-ink;
+            background: $px-signal;
+        }
+    }
+}
+
+// ---------------------------------------------------------------- content
+
+.page-content {
+    padding: 30px 0;
+}
+
+.wrapper {
+    max-width: 880px;
+}
+
+.post-list {
+    list-style: none;
+    margin-left: 0;
+
+    > li {
+        background: $px-panel;
+        padding: 20px 24px;
+        margin: 0 $px-unit 28px;
+        @include px-border($px-slate);
+
+        h2 { margin-bottom: 0; }
+    }
+}
+
+.post-meta {
+    font-family: $px-font-display;
+    font-size: 10px;
+    color: $px-amber;
+}
+
+.post-link,
+.post-title {
+    font-family: $px-font-display;
+}
+
+.post-link {
+    font-size: 15px;
+    border-bottom: 0;
+}
+
+.post-title {
+    font-size: 24px;
+}
+
+.post-header {
+    margin-bottom: 36px;
+}
+
+// ----------------------------------------------------------------- footer
+
+.site-footer {
+    border-top: $px-unit solid $px-slate;
+    background: $px-deep;
+    padding: 32px 0;
+    color: $px-muted;
+
+    a { color: $px-dim; }
+
+    .footer-col-wrapper {
+        font-size: 19px;
+        color: $px-muted;
+    }
+
+    .svg-icon { fill: $px-dim; }
+}
+
+// ------------------------------------------------------------------ shared
+
+.pixel-btn {
+    display: inline-block;
+    font-family: $px-font-display;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+    color: $px-ink;
+    background: $px-signal;
+    padding: 13px 16px;
+    border: 0;
+    border-bottom: 0;
+    cursor: pointer;
+    @include px-border($px-ink);
+    transition: transform 80ms steps(2), background-color 80ms steps(2);
+
+    &:hover,
+    &:focus {
+        color: $px-ink;
+        background: $px-amber;
+        transform: translateY(-3px);
+    }
+
+    &:active {
+        transform: translateY(2px);
+    }
+
+    &.is-ghost {
+        color: $px-text;
+        background: $px-panel;
+        @include px-border($px-slate);
+
+        &:hover,
+        &:focus {
+            color: $px-ink;
+            background: $px-dim;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body { font-size: 20px; }
+
+    h1 { font-size: 19px; }
+    h2 { font-size: 15px; }
+    h3 { font-size: 13px; }
+
+    .site-header .wrapper {
+        justify-content: center;
+    }
+
+    .site-nav {
+        position: static;
+        background: none;
+        border: 0;
+        text-align: center;
+
+        .trigger {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-bottom: 0;
+        }
+
+        .page-link {
+            font-size: 10px;
+            padding: 9px 10px;
+        }
+    }
+}
+
+// ------------------------------------------------------- content components
+
+.px-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 26px;
+    margin: 0 $px-unit 44px;
+}
+
+.px-tile {
+    background: $px-panel;
+    padding: 20px 22px 22px;
+    @include px-border($px-slate);
+
+    h3 {
+        font-size: 11px;
+        color: $px-signal;
+        margin-bottom: 12px;
+    }
+
+    p {
+        margin-bottom: 0;
+        color: $px-muted;
+    }
+}
+
+.px-list {
+    list-style: none;
+    margin: 0 $px-unit 44px;
+    padding: 0;
+
+    li {
+        background: $px-deep;
+        border-left: ($px-unit * 2) solid $px-amber;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+    }
+
+    strong {
+        color: $px-amber;
+        font-weight: 400;
+    }
+
+    em {
+        color: $px-dim;
+        font-style: normal;
+    }
+}
+
+// Home page hero.
+.px-hero {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 32px;
+    margin: 0 $px-unit 40px;
+}
+
+.px-avatar {
+    width: 148px;
+    height: 148px;
+    display: block;
+    background: $px-panel;
+    @include px-border-2($px-ink, $px-dim);
+}
+
+.px-hero-eyebrow {
+    font-family: $px-font-display;
+    font-size: 10px;
+    line-height: 1.6;
+    color: $px-amber;
+    margin-bottom: 14px;
+}
+
+.px-hero h1 {
+    margin-bottom: 12px;
+}
+
+.px-hero-role {
+    font-size: 21px;
+    color: $px-dim;
+    margin-bottom: 0;
+}
+
+.px-body {
+    margin: 0 $px-unit;
+
+    p { margin-bottom: 22px; }
+}
+
+@media screen and (max-width: 600px) {
+    .px-hero {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        text-align: center;
+        gap: 22px;
+    }
+
+    .px-avatar { width: 120px; height: 120px; }
+}

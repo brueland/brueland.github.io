@@ -1,0 +1,8 @@
+# Jekyll build output and caches
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Resolved locally; GitHub Pages ignores it and resolves its own versions
+Gemfile.lock

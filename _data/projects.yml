@@ -1,0 +1,216 @@
+# Portfolio deck source of truth.
+# Add an entry here and a new card appears in the deck at /games/.
+#
+#   sprite:  key from the sprite table in js/deck.js
+#            (planet, mech, dog, fish, flask, spine, ball, note, squirrel)
+#   kind:    award | jam | experiment | academic  -> drives the card's palette
+#   links:   first link is the card's primary action
+#   playable_here: true for builds served straight off this site,
+#            which get a "plays in your browser" marker
+#   event_url: the jam's page, which makes the award badge clickable
+#   team:    true for projects built with other people, which earns a
+#            "Team Project" chip. Absence is not a claim either way.
+#   review:  jam feedback. `pull` is the one line shown on the card panel,
+#            `quote` the longer excerpt in the Judges' Notes section, and
+#            `source` defaults to the project's own `event` if omitted.
+
+- id: galactic-marbles
+  title: Galactic Marbles
+  subtitle: Cosmic merge experiment
+  kind: award
+  sprite: planet
+  year: 2025
+  engine: Unity
+  badge: Excellence Award
+  event: Playful.AI Game Jam
+  event_url: https://itch.io/jam/playfulai-jam-1
+  team: true
+  blurb: >-
+    Combine asteroids into planets and planets into solar systems. Adaptive
+    music layers stack as the universe expands, so the soundtrack gets bigger
+    the further you merge.
+  tags: [Unity, WebGL, Adaptive Audio]
+  links:
+    - label: Play on itch.io
+      url: https://brueland.itch.io/galactic-marbles
+
+- id: blue-rust
+  title: Blue Rust
+  subtitle: Steampunk metroidvania
+  kind: award
+  sprite: mech
+  year: 2024
+  engine: Godot
+  badge: Jam Winner x5
+  event: P1 Ignite Jam
+  team: true
+  blurb: >-
+    Pixel art metroidvania built around exploration and one unusual movement
+    mechanic. Swept Best Theme Fit, Best Art, Most Accessible, Emotional
+    Masterpiece, and Best Narrative.
+  tags: [Godot, Pixel Art, Metroidvania]
+  links:
+    - label: Play on itch.io
+      url: https://knockout-forge.itch.io/blue-rust
+
+- id: space-dogs
+  title: Space Dogs
+  subtitle: Crash-land and befriend
+  kind: jam
+  sprite: dog
+  year: 2024
+  engine: Godot
+  event: Pirate Software Game Jam 16
+  event_url: https://itch.io/jam/pirate16
+  team: true
+  blurb: >-
+    You are an alien who crash-lands on a strange world and adopts three dogs.
+    Dig deeper with them to find out what the planet is hiding.
+  tags: [Game Jam, Exploration]
+  review:
+    pull: >-
+      I found myself walking away and leaving the game up just because it was
+      so pretty to look at.
+    quote: >-
+      I enjoyed the exploration and the general vibe you get with the subtle
+      glow, and it's exciting to find a new biome or a forest inside a dome.
+      [...] I must emphasize how simply enjoyable it was to float around the
+      map, which 100 percent added to my game time played. [...] I also loved
+      the intro, including the music and sound choices; it very much kept me
+      engaged. I also found myself walking away and leaving the game up just
+      because it was so pretty to look at.
+    source: Judge feedback
+  links:
+    - label: Play on itch.io
+      url: https://tlsaxt.itch.io/spacedogs
+
+- id: reel-legends
+  title: Reel Legends
+  subtitle: Relaxing fishing sim
+  kind: jam
+  sprite: fish
+  year: 2024
+  engine: Unity
+  badge: Top 30 of 71
+  event: Score Space Jam 32
+  event_url: https://itch.io/jam/scorejam32
+  team: true
+  blurb: >-
+    A calm fishing simulator designed thumbs-first for mobile, with touch
+    casting and a reel-in loop tuned to be the opposite of stressful.
+  tags: [Unity, Mobile, Touch]
+  links:
+    - label: Play on itch.io
+      url: https://brueland.itch.io/reel-legends
+
+- id: pocket-neighbors
+  title: Pocket Neighbors
+  subtitle: Cozy AFK neighborhood sim
+  kind: jam
+  sprite: house
+  year: 2025
+  engine: Unity
+  event: Playful.AI Jam - AFK Edition
+  event_url: https://itch.io/jam/playfulai-jam-afk-edition
+  team: true
+  blurb: >-
+    A tiny neighborhood that keeps living while you are away. Check in to mow,
+    clear the trash, and steer your residents through LLM-generated events,
+    with household stats modelled on Maslow's hierarchy of needs.
+  tags: [Idle, LLM, Supabase, Markov]
+  links:
+    - label: Play on itch.io
+      url: https://brueland.itch.io/pocket-neighbors
+
+- id: blue-rust-memoria
+  title: Blue Rust - Memoria
+  subtitle: Standalone story level
+  kind: jam
+  sprite: flask
+  year: 2024
+  engine: Godot
+  event: Pirate Software Game Jam 15
+  event_url: https://itch.io/jam/pirate15
+  team: true
+  blurb: >-
+    A self-contained chapter set in the Blue Rust world. Explore a dark
+    laboratory and piece together what happened there.
+  tags: [Godot, Narrative]
+  review:
+    pull: >-
+      The movement is smooth and the abilities function quite well.
+    quote: >-
+      The movement is smooth and the abilities function quite well. [...]
+      Overall, I think you have a cool start to a Metroidvania. I was intrigued
+      by the story and would like to see what the story is about. Good job!
+    source: Judge feedback
+  links:
+    - label: Play on itch.io
+      url: https://brueland.itch.io/blue-rust-memoria
+
+- id: grow-a-spine
+  title: Grow A Spine
+  subtitle: Q-Learning in a game engine
+  kind: experiment
+  sprite: spine
+  year: 2024
+  engine: Unity
+  blurb: >-
+    A reinforcement learning sandbox where a creature learns to stand up on
+    its own. Built to prove out ML training loops living inside Unity rather
+    than beside it.
+  tags: [Unity, Q-Learning, ML]
+  playable_here: true
+  links:
+    - label: Run the demo
+      url: https://brue.land/GrowASpine/
+
+- id: lordfarquadzilla
+  title: LORDFARQUADZILLA
+  subtitle: Rhythm experiment
+  kind: experiment
+  sprite: note
+  year: 2024
+  engine: Godot
+  blurb: >-
+    A rhythm toy built in Godot around music and art from the band Bilmuri.
+    Mostly an excuse to sync gameplay tightly to a track.
+  tags: [Godot, Rhythm, Audio]
+  playable_here: true
+  links:
+    - label: Play in browser
+      url: https://brue.land/LORDFARQUADZILLA/
+
+- id: sid-the-squirrel
+  title: Sid the Squirrel
+  subtitle: 3D platformer
+  kind: academic
+  sprite: squirrel
+  year: 2023
+  engine: Unity
+  badge: OMSCS CS6457
+  event: Georgia Tech
+  team: true
+  blurb: >-
+    Final project for the game design course: a full 3D platformer with
+    custom camera work, character controller, and a gameplay trailer.
+  tags: [Unity, 3D, Coursework]
+  links:
+    - label: Watch the trailer
+      url: https://www.youtube.com/watch?v=l4dxJOaDrnA
+
+- id: roll-a-ball
+  title: Roll A Ball
+  subtitle: WebGL deployment test
+  kind: experiment
+  sprite: ball
+  year: 2023
+  engine: Unity
+  blurb: >-
+    The classic Unity tutorial, shipped to GitHub Pages on purpose. This one
+    exists to prove the WebGL build and hosting pipeline actually works.
+  tags: [Unity, WebGL, Pipeline]
+  playable_here: true
+  links:
+    - label: Play in browser
+      url: https://brue.land/RollABall/

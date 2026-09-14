@@ -1,6 +1,6 @@
 # Site settings
 theme: jekyll-theme-cayman
-title: Brue Land
+title: Brue.Land
 description: Home of my digital and physical projects. <br/> Check back often to see if I've Brue'd anything new!
 email: wesbrueland@gmail.com
 baseurl: ""
@@ -8,3 +8,18 @@ github_username:  brueland
 
 # Build settings
 markdown: kramdown
+
+# Musings is unlisted: reachable by direct link, but not advertised in the
+# nav and not indexed. Posts inherit the same flag.
+defaults:
+  - scope:
+      type: posts
+    values:
+      noindex: true
+
+# Kept out of the built site: local dev files, not site content.
+exclude:
+  - tools/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/

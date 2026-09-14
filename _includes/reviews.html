@@ -1,0 +1,22 @@
+{% assign reviewed = site.data.projects | where_exp: "p", "p.review != nil" %}
+{% if reviewed.size > 0 %}
+<section class="deck-reviews">
+  <h2>Judges&rsquo; Notes</h2>
+  <p class="deck-reviews-lede">
+    Excerpts from game jam judge feedback. Trimmed for length; the omissions
+    are marked.
+  </p>
+
+  {% for p in reviewed %}
+  <figure class="deck-review">
+    <blockquote>{{ p.review.quote }}</blockquote>
+    <figcaption>
+      <span class="deck-review-src">{{ p.review.source | default: 'Judge' }}</span>
+      <span class="deck-review-on">on</span>
+      <a href="{{ p.links[0].url }}">{{ p.title }}</a>
+      {% if p.event_url %}<a class="deck-review-jam" href="{{ p.event_url }}">{{ p.event }}</a>{% else %}<span class="deck-review-jam">{{ p.event }}</span>{% endif %}
+    </figcaption>
+  </figure>
+  {% endfor %}
+</section>
+{% endif %}

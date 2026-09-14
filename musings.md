@@ -2,6 +2,7 @@
 layout: default
 title: Musings
 permalink: /musings/
+noindex: true
 ---
 
 <ul class="post-list">
