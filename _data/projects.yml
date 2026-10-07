@@ -2,7 +2,8 @@
 # Add an entry here and a new card appears in the deck at /games/.
 #
 #   sprite:  key from the sprite table in js/deck.js
-#            (planet, mech, dog, fish, flask, spine, ball, note, squirrel)
+#            (planet, mech, dog, fish, flask, spine, ball, note, squirrel,
+#             house, alien)
 #   kind:    award | jam | experiment | academic  -> drives the card's palette
 #   links:   first link is the card's primary action
 #   playable_here: true for builds served straight off this site,
@@ -147,6 +148,23 @@
   links:
     - label: Play on itch.io
       url: https://brueland.itch.io/blue-rust-memoria
+
+- id: slingshot-skies
+  title: Slingshot Skies
+  subtitle: AI-built launch game
+  kind: experiment
+  sprite: alien
+  year: 2026
+  engine: Godot
+  blurb: >-
+    Fling a jelly alien across an endless meadow, buy upgrades, and chase
+    roguelike goals and boss fights. Built almost entirely by local LLM agents
+    working through a queue of small spec-and-test tasks overnight.
+  tags: [Godot, Local LLMs, Agents]
+  playable_here: true
+  links:
+    - label: Play in browser
+      url: https://brue.land/AI-Slingshot-Slop/
 
 - id: grow-a-spine
   title: Grow A Spine

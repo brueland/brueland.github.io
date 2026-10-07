@@ -238,6 +238,24 @@
       '...kkk...kkk....',
       '................',
       '................'
+    ],
+    alien: [
+      '................',
+      '.......kk.......',
+      '......kyyk......',
+      '.......kk.......',
+      '.......kk.......',
+      '.....kkkkkk.....',
+      '...kkeeeeeekk...',
+      '..keeeeeeeeeek..',
+      '.keewweeeewweek.',
+      '.keewkeeeewkeek.',
+      '.keeeeeeeeeeeek.',
+      '.keeekeeeekeeek.',
+      '..keeekkkkeeek..',
+      '...kkeeeeeekk...',
+      '.....kkkkkk.....',
+      '................'
     ]
   };
 
